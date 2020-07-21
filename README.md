@@ -1,5 +1,3 @@
-![image](../images/confluent-logo-300-2.png)
-
 # Overview
 
 This [docker-compose.yml](docker-compose.yml) launches all services in Confluent Platform and runs them in containers in your local host, enabling you to build your own development environment. Specifically, this also builds out everything required for the GeoDemo..
