@@ -1,0 +1,84 @@
+Jul 21, 2020 1:22:42 AM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+ksqlDB, Copyright 2017-2020 Confluent Inc.
+
+CLI v5.5.1, Server v5.5.1 located at http://ksqldb-server:8088
+
+Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
+
+ksql> CREATE STREAM CTA_RAW (VehicleID VARCHAR,Lat DOUBLE,Lon DOUBLE, Deviation BIGINT,DateTime VARCHAR,TripID VARCHAR,RouteID VARCHAR,DirectionNum BIGINT,DirectionText VARCHAR,TripHeadSign VARCHAR,TripStartTime VARCHAR,TripEndTime VARCHAR,BlockNumber VARCHAR) WITH (KAFKA_TOPIC='cta', VALUE_FORMAT='JSON', TIMESTAMP='DateTime',TIMESTAMP_FORMAT='yyyy-MM-dd''T''HH:mm:ss',PARTITIONS=1, REPLICAS=1)
+ Message        
+
+ Stream created 
+
+ksql> Exiting ksqlDB.
+Jul 21, 2020 1:22:47 AM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+ksqlDB, Copyright 2017-2020 Confluent Inc.
+
+CLI v5.5.1, Server v5.5.1 located at http://ksqldb-server:8088
+
+Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
+
+ksql> CREATE STREAM CTA WITH (KAFKA_TOPIC='ctaPrepped') AS SELECT C.ROWTIME DTIME, 1 UNITY, geo_hash(lat,lon,6)
+ Message                          
+
+ Created query with ID CSAS_CTA_0 
+
+ksql> Exiting ksqlDB.
+Jul 21, 2020 1:22:50 AM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+ksqlDB, Copyright 2017-2020 Confluent Inc.
+
+CLI v5.5.1, Server v5.5.1 located at http://ksqldb-server:8088
+
+Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
+
+ksql> CREATE STREAM FENCE_RAW (type VARCHAR, "properties" MAP<VARCHAR, VARCHAR>, geometry MAP<VARCHAR, VARCHAR>, _raw_data VARCHAR) WITH (kafka_topic='fence_raw', value_format='JSON', PARTITIONS=1,REPLICAS=1)
+ Message        
+
+ Stream created 
+
+ksql> Exiting ksqlDB.
+Jul 21, 2020 1:22:53 AM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+ksqlDB, Copyright 2017-2020 Confluent Inc.
+
+CLI v5.5.1, Server v5.5.1 located at http://ksqldb-server:8088
+
+Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
+
+ksql> CREATE STREAM FENCE WITH (KAFKA_TOPIC='fence', PARTITIONS=1, REPLICAS=1)
+ Message                            
+
+ Created query with ID CSAS_FENCE_3 
+
+ksql> Exiting ksqlDB.
+Jul 21, 2020 1:22:56 AM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+ksqlDB, Copyright 2017-2020 Confluent Inc.
+
+CLI v5.5.1, Server v5.5.1 located at http://ksqldb-server:8088
+
+Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
+
+ksql> CREATE TABLE geo_heat_map AS SELECT windowstart ws, windowend we, geohash, COUNT(*) total FROM  cta  WINDOW HOPPING (SIZE 60 SECONDS, ADVANCE BY 10 SECONDS)
+ Message                                   
+
+ Created query with ID CTAS_GEO_HEAT_MAP_7 
+
+ksql> Exiting ksqlDB.
+Jul 21, 2020 1:22:59 AM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+ksqlDB, Copyright 2017-2020 Confluent Inc.
+
+CLI v5.5.1, Server v5.5.1 located at http://ksqldb-server:8088
+
+Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
+
+ksql> CREATE STREAM ALERT WITH (KAFKA_TOPIC='alert',PARTITIONS=1, REPLICAS=1) AS SELECT c.ROWTIME VEHICLETIME,f.ROWTIME FENCETIME, *  FROM CTA c LEFT JOIN FENCE f WITHIN 7 days ON c.UNITY = f.UNITY WHERE GEO_CONTAINED(c.LAT, c.LON, f._RAW_DATA)
+ Message                            
+
+ Created query with ID CSAS_ALERT_9 
+
+ksql> Exiting ksqlDB.
