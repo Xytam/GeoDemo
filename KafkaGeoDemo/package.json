@@ -1,0 +1,24 @@
+{
+  "name": "KafkaGeoDemo",
+  "version": "1.0.0",
+  "description": "This repo has a demonstration of the KSQLGeo UDF.  The data comes from Chicago Transit Authority (CTA) which publishes  information updated on a minute basis.  This demonstration provides a node.js script that queries the REST API CTA  provides and publishes it into Kafka.  That data will then be pre-processed in KSQL to transform it slightly and enrich  with a geo hash.  One of the transformations is to speed the timeline up 10X since minute upates are rather slow.  The  geo hash is calculated using the geo_hash() UDF function.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wlaforest/KafkaGeoDemo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wlaforest/KafkaGeoDemo/issues"
+  },
+  "homepage": "https://github.com/wlaforest/KafkaGeoDemo#readme",
+  "dependencies": {
+    "kafkajs": "^1.12.0",
+    "request": "^2.88.2"
+  }
+}
