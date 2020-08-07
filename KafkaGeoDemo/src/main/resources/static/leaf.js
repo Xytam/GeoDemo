@@ -60,7 +60,7 @@ busSource.addEventListener('message', function(e){
   var polyLine = polyLines[id];
   if ( polyLine == null) {
     var lineColor = colorArray[(id % colorArray.length)-1];
-    var pointList = [[obj.Lat, obj.Lon]]
+    var pointList = [[obj.LAT, obj.LON]]
     var polyLine = L.polyline(pointList, {
       color: lineColor,
       weight: 3,
